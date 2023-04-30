@@ -1,0 +1,15 @@
+C:\Users\Kirill\source\repos\HeroJourneyC#\bin\Debug\net6.0\HeroJourneyC#.exe
+C:\Users\Kirill\source\repos\HeroJourneyC#\bin\Debug\net6.0\HeroJourneyC#.deps.json
+C:\Users\Kirill\source\repos\HeroJourneyC#\bin\Debug\net6.0\HeroJourneyC#.runtimeconfig.json
+C:\Users\Kirill\source\repos\HeroJourneyC#\bin\Debug\net6.0\HeroJourneyC#.dll
+C:\Users\Kirill\source\repos\HeroJourneyC#\bin\Debug\net6.0\HeroJourneyC#.pdb
+C:\Users\Kirill\source\repos\HeroJourneyC#\obj\Debug\net6.0\HeroJourneyC#.csproj.AssemblyReference.cache
+C:\Users\Kirill\source\repos\HeroJourneyC#\obj\Debug\net6.0\HeroJourneyC#.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Kirill\source\repos\HeroJourneyC#\obj\Debug\net6.0\HeroJourneyC#.AssemblyInfoInputs.cache
+C:\Users\Kirill\source\repos\HeroJourneyC#\obj\Debug\net6.0\HeroJourneyC#.AssemblyInfo.cs
+C:\Users\Kirill\source\repos\HeroJourneyC#\obj\Debug\net6.0\HeroJourneyC#.csproj.CoreCompileInputs.cache
+C:\Users\Kirill\source\repos\HeroJourneyC#\obj\Debug\net6.0\HeroJourneyC#.dll
+C:\Users\Kirill\source\repos\HeroJourneyC#\obj\Debug\net6.0\refint\HeroJourneyC#.dll
+C:\Users\Kirill\source\repos\HeroJourneyC#\obj\Debug\net6.0\HeroJourneyC#.pdb
+C:\Users\Kirill\source\repos\HeroJourneyC#\obj\Debug\net6.0\HeroJourneyC#.genruntimeconfig.cache
+C:\Users\Kirill\source\repos\HeroJourneyC#\obj\Debug\net6.0\ref\HeroJourneyC#.dll

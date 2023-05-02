@@ -244,16 +244,16 @@
         }
     }
 
-    class MonsterList
+    public class MonsterList
     {
         Monster[] list = new Monster[20];
 
-        Monster getFinalBoss()
+        public Monster getFinalBoss()
         {
             return new Dragon();
         }
 
-        Monster getRandomMonster(int currentKm)
+        public Monster getRandomMonster(int currentKm)
         {
             var rand = new Random();
 
@@ -274,7 +274,7 @@
                 return list[16];
         }
 
-        MonsterList()
+        public MonsterList()
         {
             list[0] = new Slime();
             list[1] = new GoblinThief();

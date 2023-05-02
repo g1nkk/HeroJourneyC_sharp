@@ -97,11 +97,11 @@
         public int Damage { get; } = 35;
     }
 
-    class WeaponList
+    public class WeaponList
     {
-        public Weapon[] list = new Weapon[10];
+        Weapon[] list = new Weapon[10];
 
-        WeaponList()
+        public WeaponList()
         {
             list[0] = new WoodenClub();
             list[1] = new BrassKnuckles();

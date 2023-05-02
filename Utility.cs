@@ -8,7 +8,7 @@ namespace HeroJourneyC_
 {
     public static class Utility
     {
-        static void Pause()
+        public static void Pause()
         {
             Console.WriteLine();
             Console.WriteLine("Press any button to continue...");

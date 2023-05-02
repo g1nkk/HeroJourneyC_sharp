@@ -1,7 +1,8 @@
 ﻿namespace HeroJourneyC_
 {
-    static class EarlyGame
+    public class EarlyGame : Program
     {
+        public Hero user;
         static void SetPlayerName()
         {
             bool invalidName = false;
@@ -29,7 +30,6 @@
                     isReady = true;
                 }
             }
-            
         }
 
         static void StartNewGame()
@@ -90,7 +90,7 @@
 
         static void ShowButtons(int flag)
         {
-            if(flag==0)
+            if (flag == 0)
             {
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("\t\t   ___  __   _____  __");
@@ -104,7 +104,7 @@
                 Console.WriteLine("\t\t/___/_/|_/___/ /_/    ");
                 Console.ForegroundColor = ConsoleColor.White;
             }
-            else if (flag==1)
+            else if (flag == 1)
             {
                 Console.ForegroundColor = ConsoleColor.DarkGray;
                 Console.WriteLine("\t\t   ___  __   _____  __");

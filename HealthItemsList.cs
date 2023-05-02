@@ -81,7 +81,7 @@
     }
     public class HealthItemList
     {
-        private Item[] healthItemList = new Item[10];
+        private Item[] healthItemList;
 
         public HealthItemList()
         {

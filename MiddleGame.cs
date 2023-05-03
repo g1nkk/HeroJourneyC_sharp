@@ -4,6 +4,80 @@ namespace HeroJourneyC_
 {
     class MiddleGame
     {
+
+        int getColor(int menuPosition)
+        {
+
+        }
+        void ShowNextStepMenu()
+        {
+            bool isChosen = false;
+            int choose = 0;
+            while (!isChosen)
+            {
+                Console.Clear();
+
+                if (choose == 0)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("\n\t\tCONTINUE TRAVEL");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine("\t\tPLAYER STATISTICS");
+                    Console.WriteLine("\t\tEXIT");
+                }
+                else if (choose == 1)
+                {
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine("\n\t\tCONTINUE TRAVEL");
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("\t\tPLAYER STATISTICS");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine("\t\tEXIT");
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine("\n\t\tCONTINUE TRAVEL");
+                    Console.WriteLine("\t\tPLAYER STATISTICS");
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("\t\tEXIT");
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+
+                switch (Console.ReadKey().Key)
+                {
+                    case ConsoleKey.UpArrow:
+                        if (choose > 0)
+                            choose--;
+                        break;
+                    case ConsoleKey.DownArrow:
+                        if (choose < 2)
+                            choose++;
+                        break;
+                    case ConsoleKey.Enter:
+                        isChosen = true;
+                        break;
+                }
+            }
+
+            switch (choose)
+            {
+                case 0:
+                    MakeNextStep();
+                    break;
+                case 1:
+                    user.ShowPlayerStatistics();
+                    Console.ReadKey(true);
+                    ShowNextStepMenu();
+                    break;
+                case 2:
+                    Environment.Exit(0);
+                    break;
+            }
+        }
+
+
+
         public int GetRandomPos(GameInfo gameInfo)
         {
             Random rand = new Random();

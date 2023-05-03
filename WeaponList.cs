@@ -99,7 +99,7 @@
 
     public class WeaponList
     {
-        Weapon[] list = new Weapon[10];
+        public Weapon[] list = new Weapon[10];
 
         public WeaponList()
         {
@@ -115,7 +115,7 @@
             list[9] = new Mjolnir();
             list[10] = new Glock();
         }
-        public Weapon getRandomWeapon()
+        public Weapon GetRandomWeapon()
         {
             var random = new Random();
             int position = random.Next(10);

@@ -11,7 +11,7 @@ namespace HeroJourneyC_
         public static void Pause()
         {
             Console.WriteLine();
-            Console.WriteLine("Press any button to continue...");
+            Console.WriteLine("\tPress any button to continue...");
             Console.ReadKey();
         }
     }

@@ -1,4 +1,7 @@
-﻿namespace HeroJourneyC_
+﻿using System.Net.Http.Headers;
+using System.Xml.Linq;
+
+namespace HeroJourneyC_
 {
     public class GameInfo
     {
@@ -9,21 +12,33 @@
         public ClothesList clothesList = new ClothesList();
         public HealthItemList healthItemList = new HealthItemList();
         public MaxHealthItemList maxHealthItemList = new MaxHealthItemList();
-        public SecretShop secretShop = new SecretShop();
+
+        public SecretShop secretShop;
+
         public GameInfo(string name)
         {
             user = new Hero(name);
+            secretShop = new SecretShop(weaponList, healthItemList, maxHealthItemList, user);
         }
     }
 
-    public class EarlyGame : Program
+    public class EarlyGame
     {
+        static void StartNewGame()
+        {
+            var playerName = SetPlayerName();
 
-        static void SetPlayerName()
+            var gameInfo = new GameInfo(playerName);
+
+            SetStartItems(gameInfo);
+            showNextStepMen();
+        }
+
+        static string SetPlayerName()
         {
             bool invalidName = false;
             bool isReady = false;
-            string name;
+            string name = "";
 
             while (!isReady)
             {
@@ -46,24 +61,23 @@
                     isReady = true;
                 }
             }
+            return name;
         }
 
-        static void StartNewGame()
+        static void SetStartItems(GameInfo gameInfo)
         {
-            SetPlayerName();
-
             Clothes pajamas = new Pajamas();
-            user.SetClothes(pajamas);
+            gameInfo.user.Clothes = pajamas;
 
             Weapon butterKnife = new ButterKnife();
-            user.SetWeapon(butterKnife);
-
-            ShowNextStepMenu();
-            Console.Clear();
+            gameInfo.user.Weapon = butterKnife;
         }
 
-        static void StartPrologue()
+        static void ShowPrologue()
         {
+            Console.SetWindowSize(75, 20);
+            Console.SetBufferSize(75, 20);
+
             Console.Clear();
 
             Console.WriteLine("\t\t\tPrologue:\n\n");
@@ -71,7 +85,7 @@
             Console.WriteLine("\tthe sun shines brightly outside the window,\n");
             Console.WriteLine("\tand you have another busy working day ahead of you.\n\n");
 
-            Console.ReadKey();
+            Utility.Pause();
             Console.Clear();
 
             Console.WriteLine("\t\t\tPrologue:\n\n");
@@ -81,7 +95,7 @@
             Console.WriteLine("\tfall under you and in a second you were already\n");
             Console.WriteLine("\tsitting in a clearing with a note in your hands that says:\n\n");
 
-            Console.ReadKey();
+            Utility.Pause();
             Console.Clear();
 
             Console.WriteLine("\t\t\tPrologue:\n\n");
@@ -91,7 +105,7 @@
             Console.WriteLine("\tthe Goldholders, then you will have the honor of becoming\n");
             Console.WriteLine("\tthe owner of all the jewels of the treasury of the Holy Grail!\"\n\n");
 
-            Console.ReadKey();
+            Utility.Pause();
             Console.Clear();
 
             Console.WriteLine("\t\t\tPrologue:\n\n");
@@ -100,51 +114,35 @@
             Console.WriteLine("\tsign in front of you says: \"Castle of the Goldholders - 100km\".\n\n");
             Console.WriteLine("\tThis is where your adventure begins...\n\n");
 
-            Console.ReadKey();
+            Utility.Pause();
         }
 
-
-        static void ShowButtons(int flag)
+        static void ShowButtons()
         {
-            if (flag == 0)
-            {
-                Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\t\t   ___  __   _____  __");
+            Console.WriteLine("\t\t  / _ \\/ /  / _ \\ \\/ /");
+            Console.WriteLine("\t\t / ___/ /__/ __ |\\  / ");
+            Console.WriteLine("\t\t/_/  /____/_/ |_|/_/  ");
+
+            Console.WriteLine("\t\t   _____  ____________");
+            Console.WriteLine("\t\t  / __/ |/_/  _/_  __/");
+            Console.WriteLine("\t\t / _/_>  <_/ /  / /   ");
+            Console.WriteLine("\t\t/___/_/|_/___/ /_/    ");
+        }
+
+        static void ShowButtons(bool flag)
+        {
+                Console.ForegroundColor = flag ? Console.ForegroundColor=ConsoleColor.DarkGray : Console.ForegroundColor=ConsoleColor.White;
                 Console.WriteLine("\t\t   ___  __   _____  __");
                 Console.WriteLine("\t\t  / _ \\/ /  / _ \\ \\/ /");
                 Console.WriteLine("\t\t / ___/ /__/ __ |\\  / ");
                 Console.WriteLine("\t\t/_/  /____/_/ |_|/_/  ");
-                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.ForegroundColor = flag ? Console.ForegroundColor = ConsoleColor.White : Console.ForegroundColor = ConsoleColor.DarkGray;
                 Console.WriteLine("\t\t   _____  ____________");
                 Console.WriteLine("\t\t  / __/ |/_/  _/_  __/");
                 Console.WriteLine("\t\t / _/_>  <_/ /  / /   ");
                 Console.WriteLine("\t\t/___/_/|_/___/ /_/    ");
                 Console.ForegroundColor = ConsoleColor.White;
-            }
-            else if (flag == 1)
-            {
-                Console.ForegroundColor = ConsoleColor.DarkGray;
-                Console.WriteLine("\t\t   ___  __   _____  __");
-                Console.WriteLine("\t\t  / _ \\/ /  / _ \\ \\/ /");
-                Console.WriteLine("\t\t / ___/ /__/ __ |\\  / ");
-                Console.WriteLine("\t\t/_/  /____/_/ |_|/_/  ");
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("\t\t   _____  ____________");
-                Console.WriteLine("\t\t  / __/ |/_/  _/_  __/");
-                Console.WriteLine("\t\t / _/_>  <_/ /  / /   ");
-                Console.WriteLine("\t\t/___/_/|_/___/ /_/    ");
-                Console.ForegroundColor = ConsoleColor.White;
-            }
-            else // w/o color
-            {
-                Console.WriteLine("\t\t   ___  __   _____  __");
-                Console.WriteLine("\t\t  / _ \\/ /  / _ \\ \\/ /");
-                Console.WriteLine("\t\t / ___/ /__/ __ |\\  / ");
-                Console.WriteLine("\t\t/_/  /____/_/ |_|/_/  ");
-                Console.WriteLine("\t\t   _____  ____________");
-                Console.WriteLine("\t\t  / __/ |/_/  _/_  __/");
-                Console.WriteLine("\t\t / _/_>  <_/ /  / /   ");
-                Console.WriteLine("\t\t/___/_/|_/___/ /_/    ");
-            }
         }
         static void ShowGameName()
         {
@@ -158,54 +156,52 @@
 
         static public void StartAnimation()
         {
+            int waitTime = 150;
+
             #region logo fage in
 
-            int sleepTime = 150;
-            Thread.Sleep(sleepTime);
+            Thread.Sleep(waitTime);
 
             Console.ForegroundColor = ConsoleColor.DarkGray;
             ShowGameName();
 
-            Thread.Sleep(sleepTime);
+            Thread.Sleep(waitTime);
 
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Gray;
             ShowGameName();
 
-            Thread.Sleep(sleepTime);
+            Thread.Sleep(waitTime);
 
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.White;
             ShowGameName();
-
-
-
 
             #endregion
             #region buttons fade in
 
-            Thread.Sleep(sleepTime);
+            Thread.Sleep(waitTime);
             Console.Clear();
             ShowGameName();
             Console.ForegroundColor = ConsoleColor.DarkGray;
-            ShowButtons(2); // w\o color mode
+            ShowButtons();
 
-            Thread.Sleep(sleepTime);
+            Thread.Sleep(waitTime);
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.White;
             ShowGameName();
             Console.ForegroundColor = ConsoleColor.Gray;
-            ShowButtons(2);
+            ShowButtons();
 
 
-            Thread.Sleep(sleepTime);
+            Thread.Sleep(waitTime);
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.White;
             ShowGameName();
             Console.ForegroundColor = ConsoleColor.White;
-            ShowButtons(2);
+            ShowButtons();
 
-            Thread.Sleep(sleepTime);
+            Thread.Sleep(waitTime);
 
             #endregion
 
@@ -221,7 +217,8 @@
             {
                 Console.Clear();
                 ShowGameName();
-                ShowButtons(choose);
+                ShowButtons(Convert.ToBoolean(choose));
+
                 switch (Console.ReadKey().Key)
                 {
                     case ConsoleKey.UpArrow:
@@ -240,8 +237,7 @@
             switch (choose)
             {
                 case 0:
-                    //StartPrologue();
-                    //StartNewGame();
+                    StartNewGame();
                     break;
                 case 1:
                     Environment.Exit(0);

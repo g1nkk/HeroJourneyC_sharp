@@ -1,6 +1,6 @@
 ﻿namespace HeroJourneyC_
 {
-    class SecretShop
+    public class SecretShop
     {
         protected Hero user;
 
@@ -30,7 +30,7 @@
                 Console.Clear();
                 Console.WriteLine($"\n\tGenerating shop range{dots[i]}");
                 Thread.Sleep(700);
-                weapons[i] = weaponList.getRandomWeapon();
+                weapons[i] = weaponList.GetRandomWeapon();
                 healthItems[i] = healthItemList.GetRandomHealthItem();
                 maxHealthItems[i] = maxHealthItemList.GetRandomMaxHealthItem();
             }

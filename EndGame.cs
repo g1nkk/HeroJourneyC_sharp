@@ -14,14 +14,14 @@ namespace HeroJourneyC_
             Console.Clear();
             // good enging
         }
-        public static void ShowDeadEnd()
+        public static void ShowDeadEnd(GameInfo gameInfo)
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("\t\tYou died.");
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine($"\tYour journey ended at {user.Km}km");
-            Console.WriteLine($"\t{100 - user.Km}km has left to the castle\n\n");
+            Console.WriteLine($"\tYour journey ended at {gameInfo.user.Km}km");
+            Console.WriteLine($"\t{100 - gameInfo.user.Km}km has left to the castle\n\n");
             Utility.Pause();
             Environment.Exit(0);
         }

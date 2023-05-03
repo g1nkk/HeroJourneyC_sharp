@@ -4,14 +4,14 @@ namespace HeroJourneyC_
 {
     class MiddleGame
     {
-        public int GetRandomPos(Hero user)
+        public int GetRandomPos(GameInfo gameInfo)
         {
             Random rand = new Random();
             int position;
 
-            if (user.Km > 10)
+            if (gameInfo.user.Km > 10)
             {
-                position = rand.Next(0, user.Km / 10);
+                position = rand.Next(0, gameInfo.user.Km / 10);
             }
             else
             {
@@ -21,14 +21,14 @@ namespace HeroJourneyC_
             return position;
         }
 
-        public void GetItemAfterDeath(Hero user, WeaponList weaponList, ClothesList clothesList, HealthItemList healthItemList, MaxHealthItemList maxHealthItemList)
+        public void GetItemAfterDeath(GameInfo gameInfo)
         {
             Random rand = new Random();
 
             int type = rand.Next(0, 4);
             bool isChosen = false;
             int choose = 0;
-            int pos = GetRandomPos(user);
+            int pos = GetRandomPos(gameInfo);
 
             switch (type) //0-cloth 1-weapon 2-max 3-health
             {
@@ -37,9 +37,9 @@ namespace HeroJourneyC_
                     {
                         Console.Clear();
 
-                        Console.WriteLine($"\n\tYou received {clothesList.list[pos].Name}!");
-                        Console.WriteLine($"\t{clothesList.list[pos].Name} | armor: {clothesList.list[pos].Armor}");
-                        Console.WriteLine($"\tYour armor: {user.Armor}");
+                        Console.WriteLine($"\n\tYou received {gameInfo.clothesList.list[pos].Name}!");
+                        Console.WriteLine($"\t{gameInfo.clothesList.list[pos].Name} | armor: {gameInfo.clothesList.list[pos].Armor}");
+                        Console.WriteLine($"\tYour armor: {gameInfo.user.Armor}");
                         Console.WriteLine("\tYou want to equip new armor?\n");
 
                         if (choose == 0)
@@ -77,13 +77,13 @@ namespace HeroJourneyC_
                     {
                         case 0:
                             Console.Clear();
-                            Console.WriteLine($"\tYou equipped {clothesList.list[pos].Name}!");
-                            user.Clothes = clothesList.list[pos];
-                            Console.ReadKey();
+                            Console.WriteLine($"\tYou equipped {gameInfo.clothesList.list[pos].Name}!");
+                            gameInfo.user.Clothes = gameInfo.clothesList.list[pos];
+                            Utility.Pause();
                             break;
                         case 1:
                             Console.WriteLine("\tYou continued your adventure...");
-                            Console.ReadKey();
+                            Utility.Pause();
                             break;
                     }
                     break;
@@ -95,9 +95,9 @@ namespace HeroJourneyC_
                     {
                         Console.Clear();
 
-                        Console.WriteLine($"\n\tYou received {weaponList.list[pos].Name}!");
-                        Console.WriteLine($"\t{weaponList.list[pos].Name} | damage: {weaponList.list[pos].Damage}");
-                        Console.WriteLine($"\tYour weapon damage: {user.Damage}");
+                        Console.WriteLine($"\n\tYou received {gameInfo.weaponList.list[pos].Name}!");
+                        Console.WriteLine($"\t{gameInfo.weaponList.list[pos].Name} | damage: {gameInfo.weaponList.list[pos].Damage}");
+                        Console.WriteLine($"\tYour weapon damage: {gameInfo.user.Damage}");
                         Console.WriteLine("\tYou want to equip new weapon?\n");
 
                         if (choose == 0)
@@ -115,18 +115,17 @@ namespace HeroJourneyC_
                             Console.ForegroundColor = ConsoleColor.White;
                         }
 
-                        int c = Console.ReadKey(true).KeyChar;
-                        switch (c)
+                        switch (Console.ReadKey().Key)
                         {
-                            case KEY_UP:
+                            case ConsoleKey.UpArrow:
                                 if (choose > 0)
                                     choose--;
                                 break;
-                            case KEY_DOWN:
+                            case ConsoleKey.DownArrow:
                                 if (choose < 1)
                                     choose++;
                                 break;
-                            case ENTER:
+                            case ConsoleKey.Enter:
                                 isChosen = true;
                                 break;
                         }
@@ -136,20 +135,27 @@ namespace HeroJourneyC_
                     switch (choose)
                     {
                         case 0:
-                            Console.WriteLine($"\tYou equipped {weaponList.list[pos].getName()}!");
-                            user.setWeapon(weaponList.list[pos]);
+                            Console.WriteLine($"\tYou equipped {gameInfo.weaponList.list[pos].Name}!");
+                            gameInfo.user.Weapon = gameInfo.weaponList.list[pos];
                             break;
                         case 1:
                             Console.WriteLine("\tYou continued your adventure...");
-                            Console.ReadKey();
+                            Utility.Pause();
                             break;
                     }
                     break;
 
                 case 2:
                     Console.Clear();
-                    user.itemList.Add(maxHealthItemList.getRandomMaxHealthItem());
-                    Console.WriteLine($"\n\tYou received {user.itemList[user]}");
+                    gameInfo.user.itemList.Add(gameInfo.maxHealthItemList.GetRandomMaxHealthItem());
+                    Console.WriteLine($"\n\tYou received {gameInfo.user.itemList.Count}");
+                    Utility.Pause();
+                    break;
+                case 3:
+                    Console.Clear();
+                    gameInfo.user.itemList.Add(gameInfo.healthItemList.GetRandomHealthItem());
+                    Console.WriteLine($"\n\tYou received {gameInfo.user.itemList.Count}");
+                    Utility.Pause();
                     break;
             }
         }

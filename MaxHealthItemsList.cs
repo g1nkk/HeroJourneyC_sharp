@@ -69,7 +69,7 @@
             };
         }
 
-        public Item getRandomMaxHealthItem()
+        public Item GetRandomMaxHealthItem()
         {
             Random rand = new Random();
             int position = rand.Next(10);

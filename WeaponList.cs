@@ -99,7 +99,7 @@
 
     public class WeaponList
     {
-        public Weapon[] list = new Weapon[10];
+        public Weapon[] list = new Weapon[11];
 
         public WeaponList()
         {

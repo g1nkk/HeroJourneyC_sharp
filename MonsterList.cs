@@ -13,7 +13,7 @@
     class Slime : Monster
     {
         public string Name { get; } = "SLIME";
-        public int Strength { get; } = 3;
+        public int Strength { get; } = 10;
         public int Revard { get; } = 14;
         public int Hp { get; set; } = 8;
         public int Armor { get; } = 0;

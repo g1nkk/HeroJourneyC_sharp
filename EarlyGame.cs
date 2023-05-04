@@ -26,16 +26,20 @@ namespace HeroJourneyC_
     {
         static void StartNewGame()
         {
-            var playerName = SetPlayerName();
+            ShowPrologue();
 
+            var playerName = SetPlayerName();
             var gameInfo = new GameInfo(playerName);
 
             SetStartItems(gameInfo);
-            showNextStepMen();
+            MiddleGame.ShowNextStepMenu(gameInfo);
         }
 
         static string SetPlayerName()
         {
+            Console.SetWindowSize(50, 6);
+            Console.SetBufferSize(50, 6);
+
             bool invalidName = false;
             bool isReady = false;
             string name = "";
@@ -46,14 +50,18 @@ namespace HeroJourneyC_
 
                 if (invalidName)
                 {
+                    Console.SetWindowSize(50, 8);
+                    Console.SetBufferSize(50, 8);
+
                     Console.WriteLine("\tName must be at least 3 characters!\n\n");
                 }
 
                 Console.WriteLine("\t\tEnter your name:\n\n");
+                Console.Write("\t\t     ");
                 name = Console.ReadLine();
 
                 if (name.Length < 3)
-                {
+                { 
                     invalidName = true;
                 }
                 else
@@ -66,11 +74,14 @@ namespace HeroJourneyC_
 
         static void SetStartItems(GameInfo gameInfo)
         {
-            Clothes pajamas = new Pajamas();
-            gameInfo.user.Clothes = pajamas;
+            gameInfo.user.Clothes = new Pajamas();
 
-            Weapon butterKnife = new ButterKnife();
-            gameInfo.user.Weapon = butterKnife;
+            gameInfo.user.Weapon = new ButterKnife();
+
+            for(int i = 0; i<10; i++)
+            {
+                gameInfo.user.itemList.Add(new HerbsSet());
+            }
         }
 
         static void ShowPrologue()
@@ -119,38 +130,38 @@ namespace HeroJourneyC_
 
         static void ShowButtons()
         {
-            Console.WriteLine("\t\t   ___  __   _____  __");
-            Console.WriteLine("\t\t  / _ \\/ /  / _ \\ \\/ /");
-            Console.WriteLine("\t\t / ___/ /__/ __ |\\  / ");
-            Console.WriteLine("\t\t/_/  /____/_/ |_|/_/  ");
+            Console.WriteLine("\t\t    ___  __   _____  __");
+            Console.WriteLine("\t\t   / _ \\/ /  / _ \\ \\/ /");
+            Console.WriteLine("\t\t  / ___/ /__/ __ |\\  / ");
+            Console.WriteLine("\t\t /_/  /____/_/ |_|/_/  ");
 
-            Console.WriteLine("\t\t   _____  ____________");
-            Console.WriteLine("\t\t  / __/ |/_/  _/_  __/");
-            Console.WriteLine("\t\t / _/_>  <_/ /  / /   ");
-            Console.WriteLine("\t\t/___/_/|_/___/ /_/    ");
+            Console.WriteLine("\t\t    _____  ____________");
+            Console.WriteLine("\t\t   / __/ |/_/  _/_  __/");
+            Console.WriteLine("\t\t  / _/_>  <_/ /  / /   ");
+            Console.WriteLine("\t\t /___/_/|_/___/ /_/    ");
         }
 
         static void ShowButtons(bool flag)
         {
                 Console.ForegroundColor = flag ? Console.ForegroundColor=ConsoleColor.DarkGray : Console.ForegroundColor=ConsoleColor.White;
-                Console.WriteLine("\t\t   ___  __   _____  __");
-                Console.WriteLine("\t\t  / _ \\/ /  / _ \\ \\/ /");
-                Console.WriteLine("\t\t / ___/ /__/ __ |\\  / ");
-                Console.WriteLine("\t\t/_/  /____/_/ |_|/_/  ");
+                Console.WriteLine("\t\t    ___  __   _____  __");
+                Console.WriteLine("\t\t   / _ \\/ /  / _ \\ \\/ /");
+                Console.WriteLine("\t\t  / ___/ /__/ __ |\\  / ");
+                Console.WriteLine("\t\t /_/  /____/_/ |_|/_/  ");
                 Console.ForegroundColor = flag ? Console.ForegroundColor = ConsoleColor.White : Console.ForegroundColor = ConsoleColor.DarkGray;
-                Console.WriteLine("\t\t   _____  ____________");
-                Console.WriteLine("\t\t  / __/ |/_/  _/_  __/");
-                Console.WriteLine("\t\t / _/_>  <_/ /  / /   ");
-                Console.WriteLine("\t\t/___/_/|_/___/ /_/    ");
+                Console.WriteLine("\t\t    _____  ____________");
+                Console.WriteLine("\t\t   / __/ |/_/  _/_  __/");
+                Console.WriteLine("\t\t  / _/_>  <_/ /  / /   ");
+                Console.WriteLine("\t\t /___/_/|_/___/ /_/    ");
                 Console.ForegroundColor = ConsoleColor.White;
         }
         static void ShowGameName()
         {
             Console.WriteLine();
-            Console.WriteLine("   __ _________  ____       ______  __  _____  _  ________  __ ");
-            Console.WriteLine("  / // / __/ _ \\/ __ \\  __ / / __ \\/ / / / _ \\/ |/ / __/\\ \\/ /");
-            Console.WriteLine(" / _  / _// , _/ /_/ / / // / /_/ / /_/ / , _/    / _/   \\  / ");
-            Console.WriteLine("/_//_/___/_/|_|\\____/  \\___/\\____/\\____/_/|_/_/|_/___/   /_/  ");
+            Console.WriteLine("      __ _________  ____       ______  __  _____  _  ________  __ ");
+            Console.WriteLine("     / // / __/ _ \\/ __ \\  __ / / __ \\/ / / / _ \\/ |/ / __/\\ \\/ /");
+            Console.WriteLine("    / _  / _// , _/ /_/ / / // / /_/ / /_/ / , _/    / _/   \\  / ");
+            Console.WriteLine("   /_//_/___/_/|_|\\____/  \\___/\\____/\\____/_/|_/_/|_/___/   /_/  ");
             Console.WriteLine();
         }
 

@@ -74,7 +74,7 @@
     }
     public class ClothesList
     {
-        public Clothes[] list = new Clothes[9];
+        public Clothes[] list = new Clothes[10];
 
         public ClothesList()
         {

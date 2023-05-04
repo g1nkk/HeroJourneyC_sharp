@@ -1,48 +1,28 @@
 ﻿using System.Diagnostics.Metrics;
+using System.Linq;
+using System.Net.Sockets;
+using System.Reflection.Metadata;
 
 namespace HeroJourneyC_
 {
     class MiddleGame
     {
-
-        int getColor(int menuPosition)
+        public static void ShowNextStepMenu(GameInfo gameInfo)
         {
+            Console.SetWindowSize(49, 6);
+            Console.SetBufferSize(49, 6);
 
-        }
-        void ShowNextStepMenu()
-        {
             bool isChosen = false;
             int choose = 0;
             while (!isChosen)
             {
                 Console.Clear();
 
-                if (choose == 0)
-                {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("\n\t\tCONTINUE TRAVEL");
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.WriteLine("\t\tPLAYER STATISTICS");
-                    Console.WriteLine("\t\tEXIT");
-                }
-                else if (choose == 1)
-                {
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.WriteLine("\n\t\tCONTINUE TRAVEL");
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("\t\tPLAYER STATISTICS");
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.WriteLine("\t\tEXIT");
-                }
-                else
-                {
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.WriteLine("\n\t\tCONTINUE TRAVEL");
-                    Console.WriteLine("\t\tPLAYER STATISTICS");
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("\t\tEXIT");
-                    Console.ForegroundColor = ConsoleColor.White;
-                }
+                Console.ForegroundColor = Convert.ToBoolean(choose) ? ConsoleColor.DarkGray : ConsoleColor.White;
+                Console.WriteLine("\n\n\t\tCONTINUE TRAVEL");
+                Console.ForegroundColor = Convert.ToBoolean(choose) ? ConsoleColor.White : ConsoleColor.DarkGray;
+                Console.WriteLine("\t\tPLAYER STATISTICS");
+                Console.ForegroundColor = ConsoleColor.White;
 
                 switch (Console.ReadKey().Key)
                 {
@@ -51,7 +31,7 @@ namespace HeroJourneyC_
                             choose--;
                         break;
                     case ConsoleKey.DownArrow:
-                        if (choose < 2)
+                        if (choose < 1)
                             choose++;
                         break;
                     case ConsoleKey.Enter:
@@ -63,40 +43,221 @@ namespace HeroJourneyC_
             switch (choose)
             {
                 case 0:
-                    MakeNextStep();
+                    MakeNextStep(gameInfo);
                     break;
                 case 1:
-                    user.ShowPlayerStatistics();
-                    Console.ReadKey(true);
-                    ShowNextStepMenu();
-                    break;
-                case 2:
-                    Environment.Exit(0);
+                    gameInfo.user.ShowPlayerStatistics();
+                    Utility.Pause();
+                    ShowNextStepMenu(gameInfo);
                     break;
             }
         }
 
-
-
-        public int GetRandomPos(GameInfo gameInfo)
+        static void MakeNextStep(GameInfo gameInfo)
         {
-            Random rand = new Random();
-            int position;
+            gameInfo.user.Km += 1;
+            gameInfo.user.monster = gameInfo.monsterList.getRandomMonster(gameInfo.user.Km);
+            CheckNextStepKM(gameInfo);
+        }
 
-            if (gameInfo.user.Km > 10)
+        static void CheckNextStepKM(GameInfo gameInfo)
+        {
+            Console.SetWindowSize(49, 8);
+            Console.SetBufferSize(49, 8);
+            Console.Clear();
+            if (gameInfo.user.Km == 100)
             {
-                position = rand.Next(0, gameInfo.user.Km / 10);
+                Console.WriteLine("\n\tYou continued your adventure");
+                Console.WriteLine("\tCurrent km: " + gameInfo.user.Km);
+                Console.WriteLine("\tYou came across a castle in front of you...");
+                Console.WriteLine("\tYou entered it.");
+                Console.WriteLine("\tThere is Dragon on the way!");
+                Console.WriteLine("\tThe fight begin...");
+                gameInfo.user.monster = gameInfo.monsterList.getFinalBoss();
+                Utility.Pause();
+                StartFight(gameInfo);
+            }
+            else if (gameInfo.user.Km % 5 == 0)
+            {
+                Console.WriteLine("\n\t  On the way you came across a secret shop.");
+                Console.WriteLine("\t Shopkeeper noticed you and greeted you cheerfully:");
+                Console.WriteLine("\t   Welcome to the secret shop, wanderer!");
+                Console.WriteLine("\tChoose from the best range of goods in the entire valley!\n");
+                Utility.Pause();
+                ShowSecretShop(gameInfo);
             }
             else
             {
-                position = rand.Next(0, 2);
+                Console.WriteLine("\n\t You continued your adventure");
+                Console.WriteLine("\t Current km: " + gameInfo.user.Km);
+                Console.WriteLine("\t There is " + gameInfo.user.monster.Name + " on the way!");
+                Console.WriteLine("\t The fight begin...");
+                StartFight(gameInfo);
             }
+        }
+        static void ShowSecretShop(GameInfo gameInfo)
+        {
+            gameInfo.secretShop.SetRandomProduct();
 
-            return position;
+            var rand = new Random();
+            int shopType = rand.Next(2);
+
+            //gameInfo.secretShop.VisitShop(shopType);
         }
 
-        public void GetItemAfterDeath(GameInfo gameInfo)
+        static void StartFight(GameInfo gameInfo)
         {
+            while (gameInfo.user.Hp > 0 && gameInfo.user.monster.Hp > 0)
+            {
+                Utility.Pause();
+                FightLogic(gameInfo);
+            }
+
+            if (gameInfo.user.Hp <= 0)
+            {
+                EndGame.GameOver(gameInfo);
+            }
+            else if (gameInfo.user.monster.Hp <= 0)
+            {
+                Console.SetWindowSize(50, 7);
+                Console.SetBufferSize(50, 7);
+                Console.Clear();
+
+                Console.WriteLine("\n\t You won the fight!");
+                Console.WriteLine($"\t {gameInfo.user.monster.Name} died.");
+                Console.WriteLine($"\t You got {gameInfo.user.monster.Revard} gold!");
+
+                gameInfo.user.Gold += gameInfo.user.monster.Revard;
+                gameInfo.user.monster.restoreHP();
+
+                Utility.Pause();
+
+                Random rand = new Random();
+                int luck = rand.Next(5);
+                if (luck >= 2)
+                {
+                    GetItemAfterDeath(gameInfo);
+                }
+
+                ShowNextStepMenu(gameInfo);
+            }
+        }
+        static void FightLogic(GameInfo gameInfo)
+        {
+            Console.SetWindowSize(45, 5);
+            Console.SetBufferSize(45, 5);
+
+            bool isChosen = false;
+            int choose = 0;
+
+            while (!isChosen)
+            {
+                Console.Clear();
+
+                Console.ForegroundColor = Convert.ToBoolean(choose) ? ConsoleColor.DarkGray : ConsoleColor.White;
+                Console.WriteLine("\n\n\t\t    ATTACK");
+                Console.ForegroundColor = Convert.ToBoolean(choose) ? ConsoleColor.White : ConsoleColor.DarkGray;
+                Console.WriteLine("\t\t   USE ITEM");
+                Console.ForegroundColor = ConsoleColor.White;
+
+
+                switch ((Console.ReadKey().Key))
+                {
+                    case ConsoleKey.UpArrow:
+                        if (choose > 0)
+                            choose--;
+                        break;
+                    case ConsoleKey.DownArrow:
+                        if (choose < 1)
+                            choose++;
+                        break;
+                    case ConsoleKey.Enter:
+                        isChosen = true;
+                        break;
+                }
+            }
+
+            switch (choose)
+            {
+                case 0:
+                    Console.Clear();
+                    Console.SetWindowSize(50, 14);
+                    Console.SetBufferSize(50, 14);
+
+                    gameInfo.user.heroAttack();
+                    gameInfo.user.monsterAttack();
+                    break;
+                case 1:
+                    if (gameInfo.user.itemList.Count == 0)
+                    {
+                        Console.SetWindowSize(45, 8);
+                        Console.SetBufferSize(45, 8);
+
+                        Console.WriteLine("\n\t   Inventory is empty!");
+                    }
+                    else
+                    {
+                        chooseItem(gameInfo);
+                    }
+                    break;
+            }
+        }
+
+        static void chooseItem(GameInfo gameInfo)
+        {
+            Console.SetWindowSize(70, 4 + gameInfo.user.itemList.Count);
+            Console.SetBufferSize(70, 4 + gameInfo.user.itemList.Count);
+
+
+            bool isChosen = false;
+            int choose = 0;
+
+            while (!isChosen)
+            {
+                Console.Clear();
+                Console.WriteLine();
+                for (int i = 0; i < gameInfo.user.itemList.Count; i++)
+                {
+                    if (i == choose)
+                    {
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
+                    }
+
+                    Console.Write($"\t{gameInfo.user.itemList[i].Name} | heal value: {gameInfo.user.itemList[i].Name}");
+                    Console.WriteLine($" | type: {gameInfo.user.itemList[i].Type}");
+
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+
+
+                switch (Console.ReadKey().Key)
+                {
+                    case ConsoleKey.UpArrow:
+                        if (choose > 0)
+                            choose--;
+                        break;
+                    case ConsoleKey.DownArrow:
+                        if (choose < gameInfo.user.itemList.Count - 1)
+                            choose++;
+                        break;
+                    case ConsoleKey.Enter:
+                        isChosen = true;
+                        break;
+                }
+            }
+
+            gameInfo.user.useItem(choose);
+        }
+
+        static void GetItemAfterDeath(GameInfo gameInfo)
+        {
+            Console.SetWindowSize(60, 9);
+            Console.SetBufferSize(60, 9);
+
             Random rand = new Random();
 
             int type = rand.Next(0, 4);
@@ -116,20 +277,11 @@ namespace HeroJourneyC_
                         Console.WriteLine($"\tYour armor: {gameInfo.user.Armor}");
                         Console.WriteLine("\tYou want to equip new armor?\n");
 
-                        if (choose == 0)
-                        {
-                            Console.ForegroundColor = ConsoleColor.Green;
-                            Console.WriteLine("\t\tEQUIP");
-                            Console.ForegroundColor = ConsoleColor.White;
-                            Console.WriteLine("\t\tLEAVE");
-                        }
-                        else if (choose == 1)
-                        {
-                            Console.WriteLine("\t\tEQUIP");
-                            Console.ForegroundColor = ConsoleColor.Green;
-                            Console.WriteLine("\t\tLEAVE");
-                            Console.ForegroundColor = ConsoleColor.White;
-                        }
+                        Console.ForegroundColor = Convert.ToBoolean(choose) ? ConsoleColor.DarkGray : ConsoleColor.White;
+                        Console.WriteLine("\t\tEQUIP");
+                        Console.ForegroundColor = Convert.ToBoolean(choose) ? ConsoleColor.White : ConsoleColor.DarkGray;
+                        Console.WriteLine("\t\tLEAVE");
+                        Console.ForegroundColor = ConsoleColor.White;
 
                         switch (Console.ReadKey().Key)
                         {
@@ -151,12 +303,12 @@ namespace HeroJourneyC_
                     {
                         case 0:
                             Console.Clear();
-                            Console.WriteLine($"\tYou equipped {gameInfo.clothesList.list[pos].Name}!");
+                            Console.WriteLine($"\n\tYou equipped {gameInfo.clothesList.list[pos].Name}!");
                             gameInfo.user.Clothes = gameInfo.clothesList.list[pos];
                             Utility.Pause();
                             break;
                         case 1:
-                            Console.WriteLine("\tYou continued your adventure...");
+                            Console.WriteLine("\n\tYou continued your adventure...");
                             Utility.Pause();
                             break;
                     }
@@ -174,20 +326,11 @@ namespace HeroJourneyC_
                         Console.WriteLine($"\tYour weapon damage: {gameInfo.user.Damage}");
                         Console.WriteLine("\tYou want to equip new weapon?\n");
 
-                        if (choose == 0)
-                        {
-                            Console.ForegroundColor = ConsoleColor.Green;
-                            Console.WriteLine("\t\tEQUIP");
-                            Console.ForegroundColor = ConsoleColor.White;
-                            Console.WriteLine("\t\tLEAVE");
-                        }
-                        else if (choose == 1)
-                        {
-                            Console.WriteLine("\t\tEQUIP");
-                            Console.ForegroundColor = ConsoleColor.Green;
-                            Console.WriteLine("\t\tLEAVE");
-                            Console.ForegroundColor = ConsoleColor.White;
-                        }
+                        Console.ForegroundColor = Convert.ToBoolean(choose) ? ConsoleColor.DarkGray : ConsoleColor.White;
+                        Console.WriteLine("\t\tEQUIP");
+                        Console.ForegroundColor = Convert.ToBoolean(choose) ? ConsoleColor.White : ConsoleColor.DarkGray;
+                        Console.WriteLine("\t\tLEAVE");
+                        Console.ForegroundColor = ConsoleColor.White;
 
                         switch (Console.ReadKey().Key)
                         {
@@ -222,16 +365,33 @@ namespace HeroJourneyC_
                 case 2:
                     Console.Clear();
                     gameInfo.user.itemList.Add(gameInfo.maxHealthItemList.GetRandomMaxHealthItem());
-                    Console.WriteLine($"\n\tYou received {gameInfo.user.itemList.Count}");
+                    Console.WriteLine($"\n\t  You received {gameInfo.user.itemList[gameInfo.user.itemList.Count - 1].Name}");
                     Utility.Pause();
                     break;
                 case 3:
                     Console.Clear();
                     gameInfo.user.itemList.Add(gameInfo.healthItemList.GetRandomHealthItem());
-                    Console.WriteLine($"\n\tYou received {gameInfo.user.itemList.Count}");
+                    Console.WriteLine($"\n\t  You received {gameInfo.user.itemList[gameInfo.user.itemList.Count - 1].Name}");
                     Utility.Pause();
                     break;
             }
+        }
+
+        static int GetRandomPos(GameInfo gameInfo)
+        {
+            Random rand = new Random();
+            int position;
+
+            if (gameInfo.user.Km > 10)
+            {
+                position = rand.Next(0, gameInfo.user.Km / 10);
+            }
+            else
+            {
+                position = rand.Next(0, 2);
+            }
+
+            return position;
         }
     }
 }

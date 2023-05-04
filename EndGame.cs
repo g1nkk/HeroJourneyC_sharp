@@ -14,7 +14,7 @@ namespace HeroJourneyC_
             Console.Clear();
             // good enging
         }
-        public static void ShowDeadEnd(GameInfo gameInfo)
+        public static void GameOver(GameInfo gameInfo)
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Red;

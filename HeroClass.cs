@@ -53,46 +53,12 @@
         private int hp = 150;
         private int maxHp = 150;
         private int currentKm = 0;
-        private int gold = 0;
+
+        public int Gold { get; set; } = 0;
 
         public Monster monster;
 
         public Hero(string name) { this.name = name; }
-
-        public void useItem(int itemPos)
-        {
-            Console.Clear();
-            Console.WriteLine("\t\tYou used " + itemList[itemPos].Name + "!\n");
-
-            if (itemList[itemPos].Type.Equals("max"))
-            {
-                MaxHp += itemList[itemPos].HealValue;
-
-                Console.WriteLine("Your max health increased by " + itemList[itemPos].HealValue + "!");
-                Console.WriteLine("Your new max health: " + MaxHp);
-            }
-            else
-            {
-                MaxHp += itemList[itemPos].HealValue;
-
-                Console.WriteLine("Your health increased by " + itemList[itemPos].HealValue + "!");
-                Console.WriteLine("Your health: " + hp);
-            }
-
-            itemList.RemoveAt(itemPos); // remove item after use
-        }
-
-        public int Km
-        {
-            set
-            {
-                currentKm++;
-            }
-            get
-            {
-                return currentKm;
-            }
-        }
 
         public int Hp
         {
@@ -104,47 +70,50 @@
                     hp = maxHp;
                 }
             }
-            get
-            {
-                return hp;
-            }
+            get { return hp; }
+        }
+        public int Km
+        {
+            set { currentKm++; } 
+            get { return currentKm; }
         }
         public int MaxHp
         {
-            set
+            set { maxHp += value; }
+            get { return maxHp; }
+        }
+        public void useItem(int itemPos)
+        {
+            Console.Clear();
+            Console.WriteLine("\t\tYou used " + itemList[itemPos].Name + "!\n");
+
+            if (itemList[itemPos].Type.Equals("max"))
             {
-                maxHp += value;
+                MaxHp = itemList[itemPos].HealValue;
+
+                Console.WriteLine("Your max health increased by " + itemList[itemPos].HealValue + "!");
+                Console.WriteLine("Your new max health: " + MaxHp);
             }
-            get
+            else
             {
-                return maxHp;
+                Hp = itemList[itemPos].HealValue;
+
+                Console.WriteLine("Your health increased by " + itemList[itemPos].HealValue + "!");
+                Console.WriteLine("Your health: " + Hp);
             }
+
+            itemList.RemoveAt(itemPos); // remove item after use
         }
 
-        public int Gold
-        {
-            set 
-            {
-                gold += value;
-            }
-            get
-            {
-                return gold;
-            }
-        }
-
-        public void reduceGold(int gold)
-        {
-            this.gold -= gold;
-        }
 
         public void ShowPlayerStatistics()
         {
+            Console.SetWindowSize(55, 17 + itemList.Count);
             Console.Clear();
             Console.WriteLine($"{name} statistics: \n");
             Console.WriteLine($"HP: {hp}");
             Console.WriteLine($"MAX HP: {maxHp}");
-            Console.WriteLine($"GOLD: {gold}");
+            Console.WriteLine($"GOLD: {Gold}");
             Console.WriteLine($"TRAIL: {currentKm} / 100km.\n");
 
             showInventory();
@@ -166,19 +135,46 @@
 
             if (finalDamage > 0)
             {
-                Console.WriteLine($"\tArmor absorbed {monster.Strength - finalDamage} damage!");
-                Console.WriteLine($"\tYou got {finalDamage} damage!");
+                Console.WriteLine($"\t Armor absorbed {monster.Strength - finalDamage} damage!");
+                Console.WriteLine($"\t You got {finalDamage} damage!");
                 hp -= finalDamage;
             }
             else
             {
-                Console.WriteLine($"\tArmor absorbed {monster.Strength} damage!");
-                Console.WriteLine($"\tYou got 0 damage!");
+                Console.WriteLine($"\t Armor absorbed {monster.Strength} damage!");
+                Console.WriteLine($"\t You got 0 damage!");
             }
 
-            Console.WriteLine($"\tCurrent hp: {hp}");
+            Console.Write("\tCurrent hp: ");
+            Console.ForegroundColor = CheckHp();
+            Console.Write(Hp+"\n");
+            Console.ForegroundColor = ConsoleColor.White;
         }
-        void heroAttack()
+
+        ConsoleColor CheckHp()
+        {
+            if(Hp<20)
+            {
+                return ConsoleColor.DarkRed;
+            }
+            else if (Hp<50)
+            {
+                return ConsoleColor.DarkYellow;
+            }
+            else if(Hp<100)
+            {
+                return ConsoleColor.Yellow;
+            }
+            else if (Hp<130)
+            {
+                return ConsoleColor.White;
+            }
+            else
+            {
+                return ConsoleColor.Cyan;
+            }
+        }
+        public void heroAttack()
         {
             Console.WriteLine($"\n\tYou attacked {monster.Name} with {weapon.Damage} strength!");
 

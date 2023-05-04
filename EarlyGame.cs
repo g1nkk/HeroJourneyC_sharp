@@ -13,12 +13,11 @@ namespace HeroJourneyC_
         public HealthItemList healthItemList = new HealthItemList();
         public MaxHealthItemList maxHealthItemList = new MaxHealthItemList();
 
-        public SecretShop secretShop;
+        public SecretShop secretShop = new SecretShop();
 
         public GameInfo(string name)
         {
             user = new Hero(name);
-            secretShop = new SecretShop(weaponList, healthItemList, maxHealthItemList, user);
         }
     }
 

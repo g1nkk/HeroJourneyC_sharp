@@ -97,12 +97,10 @@ namespace HeroJourneyC_
         }
         static void ShowSecretShop(GameInfo gameInfo)
         {
-            gameInfo.secretShop.SetRandomProduct();
-
             var rand = new Random();
             int shopType = rand.Next(2);
 
-            //gameInfo.secretShop.VisitShop(shopType);
+            gameInfo.secretShop.VisitShop(shopType, gameInfo);
         }
 
         static void StartFight(GameInfo gameInfo)

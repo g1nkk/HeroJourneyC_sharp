@@ -1,9 +1,4 @@
-﻿using System.Diagnostics.Metrics;
-using System.Linq;
-using System.Net.Sockets;
-using System.Reflection.Metadata;
-
-namespace HeroJourneyC_
+﻿namespace HeroJourneyC_
 {
     class MiddleGame
     {
@@ -56,7 +51,6 @@ namespace HeroJourneyC_
         static void MakeNextStep(GameInfo gameInfo)
         {
             gameInfo.user.Km += 1;
-            gameInfo.user.monster = gameInfo.monsterList.getRandomMonster(gameInfo.user.Km);
             CheckNextStepKM(gameInfo);
         }
 
@@ -67,6 +61,8 @@ namespace HeroJourneyC_
             Console.Clear();
             if (gameInfo.user.Km == 100)
             {
+                Console.SetWindowSize(54, 10);
+                Console.SetBufferSize(54, 10);
                 Console.WriteLine("\n\tYou continued your adventure");
                 Console.WriteLine("\tCurrent km: " + gameInfo.user.Km);
                 Console.WriteLine("\tYou came across a castle in front of you...");
@@ -74,20 +70,24 @@ namespace HeroJourneyC_
                 Console.WriteLine("\tThere is Dragon on the way!");
                 Console.WriteLine("\tThe fight begin...");
                 gameInfo.user.monster = gameInfo.monsterList.getFinalBoss();
-                Utility.Pause();
                 StartFight(gameInfo);
             }
             else if (gameInfo.user.Km % 5 == 0)
             {
-                Console.WriteLine("\n\t  On the way you came across a secret shop.");
-                Console.WriteLine("\t Shopkeeper noticed you and greeted you cheerfully:");
-                Console.WriteLine("\t   Welcome to the secret shop, wanderer!");
-                Console.WriteLine("\tChoose from the best range of goods in the entire valley!\n");
+                Console.SetWindowSize(75, 9);
+                Console.SetBufferSize(75, 9);
+
+                Console.WriteLine("\n\t    On the way you came across a secret shop.");
+                Console.WriteLine("\t   Shopkeeper noticed you and greeted you cheerfully:");
+                Console.WriteLine("\t     \"Welcome to the secret shop, wanderer!");
+                Console.WriteLine("\tChoose from the best range of goods in the entire valley!\"\n\t");
                 Utility.Pause();
                 ShowSecretShop(gameInfo);
             }
             else
             {
+                gameInfo.user.monster = gameInfo.monsterList.getRandomMonster(gameInfo.user.Km);
+
                 Console.WriteLine("\n\t You continued your adventure");
                 Console.WriteLine("\t Current km: " + gameInfo.user.Km);
                 Console.WriteLine("\t There is " + gameInfo.user.monster.Name + " on the way!");
@@ -100,6 +100,7 @@ namespace HeroJourneyC_
             var rand = new Random();
             int shopType = rand.Next(2);
 
+            gameInfo.secretShop.SetRandomProduct(gameInfo);
             gameInfo.secretShop.VisitShop(shopType, gameInfo);
         }
 
@@ -121,23 +122,30 @@ namespace HeroJourneyC_
                 Console.SetBufferSize(50, 7);
                 Console.Clear();
 
-                Console.WriteLine("\n\t You won the fight!");
-                Console.WriteLine($"\t {gameInfo.user.monster.Name} died.");
-                Console.WriteLine($"\t You got {gameInfo.user.monster.Revard} gold!");
-
-                gameInfo.user.Gold += gameInfo.user.monster.Revard;
-                gameInfo.user.monster.restoreHP();
-
-                Utility.Pause();
-
-                Random rand = new Random();
-                int luck = rand.Next(5);
-                if (luck >= 2)
+                if (gameInfo.user.Km == 100) // final boss fight
                 {
-                    GetItemAfterDeath(gameInfo);
+                    EndGame.ShowGoodEnd(gameInfo);
                 }
+                else
+                {
+                    Console.WriteLine("\n\t You won the fight!");
+                    Console.WriteLine($"\t {gameInfo.user.monster.Name} died.");
+                    Console.WriteLine($"\t You got {gameInfo.user.monster.Revard} gold!");
 
-                ShowNextStepMenu(gameInfo);
+                    gameInfo.user.Gold += gameInfo.user.monster.Revard;
+                    gameInfo.user.monster.restoreHP();
+
+                    Utility.Pause();
+
+                    Random rand = new Random();
+                    int luck = rand.Next(5);
+                    if (luck >= 2)
+                    {
+                        GetItemAfterDeath(gameInfo);
+                    }
+
+                    ShowNextStepMenu(gameInfo);
+                }
             }
         }
         static void FightLogic(GameInfo gameInfo)
@@ -179,8 +187,8 @@ namespace HeroJourneyC_
             {
                 case 0:
                     Console.Clear();
-                    Console.SetWindowSize(50, 14);
-                    Console.SetBufferSize(50, 14);
+                    Console.SetWindowSize(53, 13);
+                    Console.SetBufferSize(53, 13);
 
                     gameInfo.user.heroAttack();
                     gameInfo.user.monsterAttack();

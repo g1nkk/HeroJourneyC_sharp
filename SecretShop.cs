@@ -1,16 +1,16 @@
-﻿using System.Diagnostics.Metrics;
-
-namespace HeroJourneyC_
+﻿namespace HeroJourneyC_
 {
     public class SecretShop
     {
-        private Weapon[] weapons = new Weapon[4];
-        private Item[] healthItems = new Item[4];
-        private Item[] maxHealthItems = new Item[4];
+        private Weapon[] weapons = new Weapon[8];
+        private Item[] healthItems = new Item[8];
+        private Item[] maxHealthItems = new Item[8];
 
-        public void VisitShop(int type, GameInfo gameInfo) // 1 - weapons, 2 - maxHealth, 3 - health
+        public void VisitShop(int type, GameInfo gameInfo) // 0 - weapons, 1 - maxHealth, 2 - health
         {
-            SetRandomProduct(gameInfo);
+            Console.SetWindowSize(55, 17);
+            Console.SetBufferSize(55, 17);
+
 
             int choose = 0;
             bool isChosen = false;
@@ -23,18 +23,21 @@ namespace HeroJourneyC_
                 if (type == 0) ShowWeapons(choose, gameInfo);
                 else ShowItems(type, choose, gameInfo);
 
-                if (choose == 4) // leave button
+                if (choose == 8) // leave button
                 {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("\nLEAVE");
+                    Console.BackgroundColor = ConsoleColor.Cyan;
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    Console.WriteLine("\n LEAVE");
                     Console.ResetColor();
                 }
                 else
                 {
-                    Console.WriteLine("\nLEAVE");
+                    Console.WriteLine("\n LEAVE");
                 }
 
-                Console.WriteLine($"\nYour gold: {gameInfo.user.Gold}");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine($"\n Your gold: {gameInfo.user.Gold}");
+                Console.ResetColor();
 
                 switch (Console.ReadKey().Key)
                 {
@@ -45,7 +48,7 @@ namespace HeroJourneyC_
                         }
                         break;
                     case ConsoleKey.DownArrow:
-                        if (choose < 4)
+                        if (choose < 8)
                         {
                             choose++;
                         }
@@ -56,23 +59,24 @@ namespace HeroJourneyC_
                 }
             }
 
+            Console.SetWindowSize(55, 5);
+            Console.SetBufferSize(55, 5);
             Console.Clear();
 
-            if (choose != 4)
+            if (choose == 8) // leave button
             {
-                if (healthItems[choose].Value > gameInfo.user.Gold)
+                Console.Clear();
+                Console.WriteLine("\n\tYou left the health shop.");
+                Utility.Pause();
+                MiddleGame.ShowNextStepMenu(gameInfo);
+            }
+            else
+            {
+                if (AbleToBuy(type, choose, gameInfo))
                 {
-                    Console.WriteLine("\tYou don't have enough gold to buy this item!");
-                    Utility.Pause();
-                    VisitShop(type, gameInfo);
-                }
-                else // succesful
-                {
-                    Console.WriteLine($"\n\t{healthItems[choose].Name} added to your inventory!\n");
-                    Utility.Pause();
+                    BuyItem(type, choose, gameInfo);
 
-                    gameInfo.user.itemList.Add(healthItems[choose]);
-                    gameInfo.user.Gold -= healthItems[choose].Value;
+                    Utility.Pause();
 
                     choose = 0;
                     isChosen = false;
@@ -82,9 +86,9 @@ namespace HeroJourneyC_
                         Console.Clear();
 
                         Console.ForegroundColor = Convert.ToBoolean(choose) ? ConsoleColor.DarkGray : ConsoleColor.White;
-                        Console.WriteLine("\n\tBUY ONE MORE ITEM");
+                        Console.WriteLine("\n\t\t   BUY ONE MORE ITEM");
                         Console.ForegroundColor = Convert.ToBoolean(choose) ? ConsoleColor.White : ConsoleColor.DarkGray;
-                        Console.WriteLine("\tLEAVE");
+                        Console.WriteLine("\t\t        LEAVE");
 
                         switch (Console.ReadKey().Key)
                         {
@@ -116,54 +120,104 @@ namespace HeroJourneyC_
                         case 1:
                             Console.Clear();
                             Console.WriteLine("\tYou left the health shop.");
+                            Utility.Pause();
+                            MiddleGame.ShowNextStepMenu(gameInfo);
                             break;
                     }
                 }
-            }
-            else if(choose==4) // leave
-            {
-                Console.Clear();
-                Console.WriteLine("\tYou left the health shop.");
+                else 
+                {
+
+                    Console.WriteLine("\n\tYou don't have enough gold to buy this item!");
+                    Utility.Pause();
+                    VisitShop(type, gameInfo);
+                }
             }
             Utility.Pause();
         }
 
-        void SetRandomProduct(GameInfo gameInfo)
+        public void SetRandomProduct(GameInfo gameInfo)
         {
-            string[] dots = { ".", "..", "...", "...." };
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 8; i++)
             {
-                //Console.Clear();
-                //Console.WriteLine($"\n\tGenerating shop range{dots[i]}");
-                //Thread.Sleep(700);
                 weapons[i] = gameInfo.weaponList.GetRandomWeapon();
                 healthItems[i] = gameInfo.healthItemList.GetRandomHealthItem();
                 maxHealthItems[i] = gameInfo.maxHealthItemList.GetRandomMaxHealthItem();
             }
         }
 
+        void BuyItem(int type, int choose, GameInfo gameInfo)
+        {
+            if (type == 0)
+            {
+                Console.WriteLine($"\n\t{weapons[choose].Name} equipped!");
+                gameInfo.user.Weapon = weapons[choose];
+                gameInfo.user.Gold -= weapons[choose].Value;
+            }
+            else if (type == 1)
+            {
+                Console.WriteLine($"\n\t{maxHealthItems[choose].Name} added to your inventory!");
+                gameInfo.user.itemList.Add(maxHealthItems[choose]);
+                gameInfo.user.Gold -= maxHealthItems[choose].Value;
+            }
+            else if (type == 2)
+            {
+                Console.WriteLine($"\n\t{healthItems[choose].Name} added to your inventory!");
+                gameInfo.user.itemList.Add(healthItems[choose]);
+                gameInfo.user.Gold -= healthItems[choose].Value;
+            }
+        }
+
+        bool AbleToBuy(int type, int choose, GameInfo gameInfo)
+        {
+            if (type == 0) // weapon
+            {
+                if (weapons[choose].Value > gameInfo.user.Gold)
+                {
+                    return false;
+                }
+                else return true;
+            }
+            else if (type == 1) // max
+            {
+                if (maxHealthItems[choose].Value > gameInfo.user.Gold)
+                {
+                    return false;
+                }
+                else return true;
+            }
+            else // health
+            {
+                if (healthItems[choose].Value > gameInfo.user.Gold)
+                {
+                    return false;
+                }
+                else return true;
+            }
+        }
+
         void ShowWeapons(int choose, GameInfo gameInfo)
         {
-            for (int i = 0; i < 4; i++) 
+            for (int i = 0; i < 8; i++) 
             {
                 if (i == choose)
                 {
                     Console.BackgroundColor = ConsoleColor.Cyan;
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine($"{weapons[i].Name} | damage: {weapons[i].Damage} | price: {weapons[i].Value}");
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    Console.WriteLine($" {weapons[i].Name} | damage: {weapons[i].Damage} | price: {weapons[i].Value}");
                     Console.ResetColor();
                     Console.BackgroundColor = ConsoleColor.Black;
                 }
                 else if (weapons[i].Value < gameInfo.user.Gold)
                 {
                     Console.ForegroundColor = ConsoleColor.White;
-                    Console.WriteLine($"{weapons[i].Name} | damage: {weapons[i].Damage} | price: {weapons[i].Value}");
+                    Console.WriteLine($" {weapons[i].Name} | damage: {weapons[i].Damage} | price: {weapons[i].Value}");
                     Console.ResetColor();
                 }
                 else
                 {
                     Console.ForegroundColor = ConsoleColor.DarkGray;
-                    Console.WriteLine($"{weapons[i].Name} | damage: {weapons[i].Damage} | price: {weapons[i].Value}");
+                    Console.WriteLine($" {weapons[i].Name} | damage: {weapons[i].Damage} | price: {weapons[i].Value}");
                     Console.ResetColor();
                 }
             }
@@ -171,7 +225,7 @@ namespace HeroJourneyC_
         }
         void ShowItems(int type, int choose, GameInfo gameInfo)
         {
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 8; i++)
             {
                 if (type == 1) // max health
                 {
@@ -179,20 +233,20 @@ namespace HeroJourneyC_
                     {
                         Console.BackgroundColor = ConsoleColor.Cyan;
                         Console.ForegroundColor = ConsoleColor.White;
-                        Console.WriteLine($"{maxHealthItems[i].Name} | type: {maxHealthItems[i].Type} | price: {maxHealthItems[i].Value}");
+                        Console.WriteLine($" {maxHealthItems[i].Name} | type: {maxHealthItems[i].Type} | price: {maxHealthItems[i].Value}");
                         Console.ResetColor();
                         Console.BackgroundColor= ConsoleColor.Black;
                     }
                     else if (healthItems[i].Value < gameInfo.user.Gold)
                     {
                         Console.ForegroundColor = ConsoleColor.White;
-                        Console.WriteLine($"{maxHealthItems[i].Name} | type: {maxHealthItems[i].Type} | price: {maxHealthItems[i].Value}");
+                        Console.WriteLine($" {maxHealthItems[i].Name} | type: {maxHealthItems[i].Type} | price: {maxHealthItems[i].Value}");
                         Console.ResetColor();
                     }
                     else
                     {
                         Console.ForegroundColor = ConsoleColor.DarkGray;
-                        Console.WriteLine($"{maxHealthItems[i].Name} | type: {maxHealthItems[i].Type} | price: {maxHealthItems[i].Value}");
+                        Console.WriteLine($" {maxHealthItems[i].Name} | type: {maxHealthItems[i].Type} | price: {maxHealthItems[i].Value}");
                         Console.ResetColor();
                     }
                 }
@@ -202,20 +256,20 @@ namespace HeroJourneyC_
                     {
                         Console.BackgroundColor = ConsoleColor.Cyan;
                         Console.ForegroundColor = ConsoleColor.White;
-                        Console.WriteLine($"{healthItems[i].Name} | type: {healthItems[i].Type} | price: {healthItems[i].Value}");
+                        Console.WriteLine($" {healthItems[i].Name} | type: {healthItems[i].Type} | price: {healthItems[i].Value}");
                         Console.ResetColor();
                         Console.BackgroundColor = ConsoleColor.Black;
                     }
                     else if (healthItems[i].Value < gameInfo.user.Gold)
                     {
                         Console.ForegroundColor = ConsoleColor.White;
-                        Console.WriteLine($"{healthItems[i].Name} | type: {healthItems[i].Type} | price: {healthItems[i].Value}");
+                        Console.WriteLine($" {healthItems[i].Name} | type: {healthItems[i].Type} | price: {healthItems[i].Value}");
                         Console.ResetColor();
                     }
                     else
                     {
                         Console.ForegroundColor = ConsoleColor.DarkGray;
-                        Console.WriteLine($"{healthItems[i].Name} | type: {healthItems[i].Type} | price: {healthItems[i].Value}");
+                        Console.WriteLine($" {healthItems[i].Name} | type: {healthItems[i].Type} | price: {healthItems[i].Value}");
                         Console.ResetColor();
                     }
                 }

@@ -38,7 +38,7 @@
 
         public int Armor
         {
-            get { return clothes.Armor; } 
+            get { return clothes.Armor; }
         }
 
         public int Damage
@@ -53,13 +53,16 @@
         private int hp = 150;
         private int maxHp = 150;
         private int currentKm = 0;
-
         public int Gold { get; set; } = 0;
 
         public Monster monster;
 
         public Hero(string name) { this.name = name; }
 
+        public string Name
+        {
+            get { return name; }
+        }
         public int Hp
         {
             set
@@ -74,7 +77,7 @@
         }
         public int Km
         {
-            set { currentKm++; } 
+            set { currentKm++; }
             get { return currentKm; }
         }
         public int MaxHp
@@ -123,7 +126,7 @@
         {
             Console.WriteLine($"\n\tEnemy attacked with {monster.Strength} damage!");
 
-            int finalDamage=0;
+            int finalDamage = 0;
             if (monster.Strength < hp)
             {
                 finalDamage = monster.Strength - clothes.Armor;
@@ -147,25 +150,25 @@
 
             Console.Write("\tCurrent hp: ");
             Console.ForegroundColor = CheckHp();
-            Console.Write(Hp+"\n");
+            Console.Write(Hp + "\n");
             Console.ForegroundColor = ConsoleColor.White;
         }
 
         ConsoleColor CheckHp()
         {
-            if(Hp<20)
+            if (Hp < 20)
             {
                 return ConsoleColor.DarkRed;
             }
-            else if (Hp<50)
+            else if (Hp < 50)
             {
                 return ConsoleColor.DarkYellow;
             }
-            else if(Hp<100)
+            else if (Hp < 100)
             {
                 return ConsoleColor.Yellow;
             }
-            else if (Hp<130)
+            else if (Hp < 130)
             {
                 return ConsoleColor.White;
             }
@@ -184,7 +187,7 @@
                 finalDamage = weapon.Damage - monster.Armor;
             else finalDamage = 0;
 
-            monster.Hp-=finalDamage;
+            monster.Hp -= finalDamage;
 
             Console.WriteLine($"\t {monster.Name} got {finalDamage} damage!");
             Console.WriteLine($"\t {monster.Name}  hp: {monster.Hp}");

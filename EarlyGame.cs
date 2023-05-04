@@ -76,17 +76,14 @@ namespace HeroJourneyC_
             gameInfo.user.Clothes = new Pajamas();
 
             gameInfo.user.Weapon = new ButterKnife();
-
-            for(int i = 0; i<10; i++)
-            {
-                gameInfo.user.itemList.Add(new HerbsSet());
-            }
         }
 
         static void ShowPrologue()
         {
             Console.SetWindowSize(75, 20);
             Console.SetBufferSize(75, 20);
+
+            Console.ForegroundColor = ConsoleColor.White;
 
             Console.Clear();
 
@@ -152,7 +149,6 @@ namespace HeroJourneyC_
                 Console.WriteLine("\t\t   / __/ |/_/  _/_  __/");
                 Console.WriteLine("\t\t  / _/_>  <_/ /  / /   ");
                 Console.WriteLine("\t\t /___/_/|_/___/ /_/    ");
-                Console.ForegroundColor = ConsoleColor.White;
         }
         static void ShowGameName()
         {
@@ -172,19 +168,25 @@ namespace HeroJourneyC_
 
             Thread.Sleep(waitTime);
 
-            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
             ShowGameName();
 
             Thread.Sleep(waitTime);
 
             Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.ForegroundColor = ConsoleColor.Blue;
             ShowGameName();
 
             Thread.Sleep(waitTime);
 
             Console.Clear();
-            Console.ForegroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            ShowGameName();
+
+            Thread.Sleep(waitTime);
+
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Cyan;
             ShowGameName();
 
             #endregion
@@ -198,7 +200,7 @@ namespace HeroJourneyC_
 
             Thread.Sleep(waitTime);
             Console.Clear();
-            Console.ForegroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Cyan;
             ShowGameName();
             Console.ForegroundColor = ConsoleColor.Gray;
             ShowButtons();
@@ -206,7 +208,7 @@ namespace HeroJourneyC_
 
             Thread.Sleep(waitTime);
             Console.Clear();
-            Console.ForegroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Cyan;
             ShowGameName();
             Console.ForegroundColor = ConsoleColor.White;
             ShowButtons();
@@ -226,6 +228,7 @@ namespace HeroJourneyC_
             while (!isChosen)
             {
                 Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Cyan;
                 ShowGameName();
                 ShowButtons(Convert.ToBoolean(choose));
 

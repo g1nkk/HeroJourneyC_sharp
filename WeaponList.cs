@@ -50,7 +50,7 @@
 
     class SurvivorsBow : Weapon
     {
-        public string Name { get; } = "Survivoes Bow";
+        public string Name { get; } = "Survivors Bow";
         public int Value { get; } = 260;
         public int Damage { get; } = 13;
     }

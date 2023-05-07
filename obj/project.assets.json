@@ -8,23 +8,23 @@
     "net6.0-windows7.0": []
   },
   "packageFolders": {
-    "C:\\Users\\User\\.nuget\\packages\\": {},
+    "C:\\Users\\Kirill\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\User\\Documents\\GitHub\\HeroJourneyC_sharp\\HeroJourneyC#.csproj",
+      "projectUniqueName": "C:\\Users\\Kirill\\source\\repos\\HeroJourneyC#\\HeroJourneyC#.csproj",
       "projectName": "HeroJourneyC#",
-      "projectPath": "C:\\Users\\User\\Documents\\GitHub\\HeroJourneyC_sharp\\HeroJourneyC#.csproj",
-      "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\User\\Documents\\GitHub\\HeroJourneyC_sharp\\obj\\",
+      "projectPath": "C:\\Users\\Kirill\\source\\repos\\HeroJourneyC#\\HeroJourneyC#.csproj",
+      "packagesPath": "C:\\Users\\Kirill\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Kirill\\source\\repos\\HeroJourneyC#\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Kirill\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -66,7 +66,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.201\\RuntimeIdentifierGraph.json"
       }
     }
   }

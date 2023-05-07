@@ -51,10 +51,13 @@
         public static void GameOver(GameInfo gameInfo)
         {
             Console.Clear();
+            Console.SetWindowSize(55, 9);
+            Console.SetBufferSize(55, 9);
+
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("\t\tYou died.");
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine($"{gameInfo.user.Name} journey ended at {gameInfo.user.Km}km");
+            Console.WriteLine($"\t{gameInfo.user.Name} journey ended at {gameInfo.user.Km}km");
             Console.WriteLine($"\t{100 - gameInfo.user.Km}km has left to the castle\n\n");
             Utility.Pause();
             Environment.Exit(0);

@@ -85,6 +85,7 @@
             set { maxHp += value; }
             get { return maxHp; }
         }
+        public void reduceHp(int value) => hp -= value;
         public void useItem(int itemPos)
         {
             Console.Clear();

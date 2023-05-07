@@ -59,41 +59,55 @@
             Console.SetWindowSize(49, 8);
             Console.SetBufferSize(49, 8);
             Console.Clear();
-            if (gameInfo.user.Km == 100)
-            {
-                Console.SetWindowSize(54, 10);
-                Console.SetBufferSize(54, 10);
-                Console.WriteLine("\n\tYou continued your adventure");
-                Console.WriteLine("\tCurrent km: " + gameInfo.user.Km);
-                Console.WriteLine("\tYou came across a castle in front of you...");
-                Console.WriteLine("\tYou entered it.");
-                Console.WriteLine("\tThere is Dragon on the way!");
-                Console.WriteLine("\tThe fight begin...");
-                gameInfo.user.monster = gameInfo.monsterList.getFinalBoss();
-                StartFight(gameInfo);
-            }
-            else if (gameInfo.user.Km % 5 == 0)
-            {
-                Console.SetWindowSize(75, 9);
-                Console.SetBufferSize(75, 9);
 
-                Console.WriteLine("\n\t    On the way you came across a secret shop.");
-                Console.WriteLine("\t   Shopkeeper noticed you and greeted you cheerfully:");
-                Console.WriteLine("\t     \"Welcome to the secret shop, wanderer!");
-                Console.WriteLine("\tChoose from the best range of goods in the entire valley!\"\n\t");
-                Utility.Pause();
-                ShowSecretShop(gameInfo);
-            }
-            else
-            {
-                gameInfo.user.monster = gameInfo.monsterList.getRandomMonster(gameInfo.user.Km);
+            Random rand = new();
 
-                Console.WriteLine("\n\t You continued your adventure");
-                Console.WriteLine("\t Current km: " + gameInfo.user.Km);
-                Console.WriteLine("\t There is " + gameInfo.user.monster.Name + " on the way!");
-                Console.WriteLine("\t The fight begin...");
-                StartFight(gameInfo);
-            }
+            gameInfo.user.reduceHp(100);
+            var randomEventsControl = new RandomEventsControl();
+            randomEventsControl.SetRandomEvent();
+            randomEventsControl.randomEvent.Invoke(gameInfo);
+
+            //if (gameInfo.user.Km == 100)
+            //{
+            //    Console.SetWindowSize(54, 10);
+            //    Console.SetBufferSize(54, 10);
+            //    Console.WriteLine("\n\tYou continued your adventure");
+            //    Console.WriteLine("\tCurrent km: " + gameInfo.user.Km);
+            //    Console.WriteLine("\tYou came across a castle in front of you...");
+            //    Console.WriteLine("\tYou entered it.");
+            //    Console.WriteLine("\tThere is Dragon on the way!");
+            //    Console.WriteLine("\tThe fight begin...");
+            //    gameInfo.user.monster = gameInfo.monsterList.getFinalBoss();
+            //    StartFight(gameInfo);
+            //}
+            //else if (gameInfo.user.Km % 5 == 0)
+            //{
+            //    Console.SetWindowSize(75, 9);
+            //    Console.SetBufferSize(75, 9);
+
+            //    Console.WriteLine("\n\t    On the way you came across a secret shop.");
+            //    Console.WriteLine("\t   Shopkeeper noticed you and greeted you cheerfully:");
+            //    Console.WriteLine("\t     \"Welcome to the secret shop, wanderer!");
+            //    Console.WriteLine("\tChoose from the best range of goods in the entire valley!\"\n\t");
+            //    Utility.Pause();
+            //    ShowSecretShop(gameInfo);
+            //}
+            //else if (rand.Next(10) == 3)
+            //{
+            //    var randomEventsControl = new RandomEventsControl();
+            //    randomEventsControl.SetRandomEvent();
+            //    randomEventsControl.randomEvent.Invoke(gameInfo);
+            //}
+            //else
+            //{
+            //    gameInfo.user.monster = gameInfo.monsterList.getRandomMonster(gameInfo.user.Km);
+
+            //    Console.WriteLine("\n\t You continued your adventure");
+            //    Console.WriteLine("\t Current km: " + gameInfo.user.Km);
+            //    Console.WriteLine("\t There is " + gameInfo.user.monster.Name + " on the way!");
+            //    Console.WriteLine("\t The fight begin...");
+            //    StartFight(gameInfo);
+            //}
         }
         static void ShowSecretShop(GameInfo gameInfo)
         {

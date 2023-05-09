@@ -88,22 +88,25 @@
         public void reduceHp(int value) => hp -= value;
         public void useItem(int itemPos)
         {
+            Console.SetWindowSize(50, 8);
+            Console.SetBufferSize(50, 8);
+
             Console.Clear();
-            Console.WriteLine("\t\tYou used " + itemList[itemPos].Name + "!\n");
+            Console.WriteLine("\n\tYou used " + itemList[itemPos].Name + "!\n");
 
             if (itemList[itemPos].Type.Equals("max"))
             {
                 MaxHp = itemList[itemPos].HealValue;
 
-                Console.WriteLine("Your max health increased by " + itemList[itemPos].HealValue + "!");
-                Console.WriteLine("Your new max health: " + MaxHp);
+                Console.WriteLine("\tYour max health increased by " + itemList[itemPos].HealValue + "!");
+                Console.WriteLine("\tYour new max health: " + MaxHp);
             }
             else
             {
                 Hp = itemList[itemPos].HealValue;
 
-                Console.WriteLine("Your health increased by " + itemList[itemPos].HealValue + "!");
-                Console.WriteLine("Your health: " + Hp);
+                Console.WriteLine("\tYour health increased by " + itemList[itemPos].HealValue + "!");
+                Console.WriteLine("\tYour health: " + Hp);
             }
 
             itemList.RemoveAt(itemPos); // remove item after use

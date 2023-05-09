@@ -1,6 +1,4 @@
-﻿using System.Reflection.Metadata;
-
-namespace HeroJourneyC_
+﻿namespace HeroJourneyC_
 {
     class RandomEventsControl
     {

@@ -76,6 +76,8 @@
                 {
                     BuyItem(type, choose, gameInfo);
 
+                    gameInfo.soundLibrary.shopBuy.Play();
+
                     Utility.Pause();
 
                     choose = 0;

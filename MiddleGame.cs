@@ -1,4 +1,6 @@
-﻿namespace HeroJourneyC_
+﻿using System.Media;
+
+namespace HeroJourneyC_
 {
     class MiddleGame
     {
@@ -87,7 +89,7 @@
                 Utility.Pause();
                 ShowSecretShop(gameInfo);
             }
-            else if (rand.Next(10) == 3) // random pick
+            else if (rand.Next(10) == 1) // random pick
             {
                 var randomEventsControl = new RandomEventsControl();
                 randomEventsControl.SetRandomEvent();
@@ -195,6 +197,9 @@
             switch (choose)
             {
                 case 0:
+
+                    gameInfo.soundLibrary.fight.Play();
+
                     Console.Clear();
                     Console.SetWindowSize(53, 13);
                     Console.SetBufferSize(53, 13);
@@ -266,6 +271,8 @@
             }
 
             gameInfo.user.useItem(choose);
+
+            gameInfo.soundLibrary.useItem.Play();
         }
 
         static void GetItemAfterDeath(GameInfo gameInfo)

@@ -4,6 +4,8 @@
     {
         public Hero user;
 
+        public SoundLibrary soundLibrary { get; } = new SoundLibrary();
+
         public MonsterList monsterList = new MonsterList();
         public WeaponList weaponList = new WeaponList();
         public ClothesList clothesList = new ClothesList();
